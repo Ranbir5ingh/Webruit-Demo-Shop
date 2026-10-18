@@ -1,0 +1,38 @@
+{
+  "name": "@webruit/tracking",
+  "version": "1.0.0",
+  "description": "Webruit analytics tracking SDK",
+  "author": "Webruit Team",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/webruit.min.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "analytics",
+    "tracking",
+    "webruit",
+    "performance",
+    "monitoring"
+  ],
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "rollup": "^2.79.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
+  },
+  "sideEffects": false
+}

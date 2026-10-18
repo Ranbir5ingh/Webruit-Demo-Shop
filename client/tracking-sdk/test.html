@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webruit SDK Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      .hero {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        padding: 40px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .cta {
+        display: inline-block;
+        padding: 16px 32px;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: transform 0.2s;
+      }
+
+      .cta:hover {
+        transform: translateY(-2px);
+      }
+
+      .content {
+        padding: 80px 40px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .content h2 {
+        margin-bottom: 1rem;
+        color: #667eea;
+      }
+
+      .content p {
+        margin-bottom: 1rem;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin: 40px 0;
+      }
+
+      .feature {
+        padding: 24px;
+        background: #f7fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .feature h3 {
+        margin-bottom: 0.5rem;
+        color: #2d3748;
+      }
+
+      .debug {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background: #2d3748;
+        color: white;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 14px;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <div class="hero" data-webruit-section="hero" data-webruit-track>
+      <div>
+        <h1>Welcome to Webruit Test</h1>
+        <p>This page demonstrates the tracking SDK in action</p>
+        <a
+          href="#features"
+          class="cta"
+          data-webruit-id="hero-cta"
+          data-webruit-track
+        >
+          Explore Features
+        </a>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content" id="features">
+      <h2 data-webruit-section="content" data-webruit-track>
+        Features Being Tracked
+      </h2>
+      <p>The SDK is automatically tracking:</p>
+
+      <div class="feature-grid">
+        <div
+          class="feature"
+          data-webruit-track
+          data-webruit-id="feature-pageview"
+        >
+          <h3>📄 Page Views</h3>
+          <p>Automatically tracked on load</p>
+        </div>
+
+        <div
+          class="feature"
+          data-webruit-track
+          data-webruit-id="feature-totalClicks"
+        >
+          <h3>🖱️ Click Events</h3>
+          <p>Tracked with coordinates and context</p>
+        </div>
+
+        <div
+          class="feature"
+          data-webruit-track
+          data-webruit-id="feature-performance"
+        >
+          <h3>⚡ Performance</h3>
+          <p>LCP, FID, CLS metrics</p>
+        </div>
+
+        <div
+          class="feature"
+          data-webruit-track
+          data-webruit-id="feature-visibility"
+        >
+          <h3>👁️ Visibility</h3>
+          <p>Time elements are in viewport</p>
+        </div>
+      </div>
+
+      <p>Scroll down to see more...</p>
+      <div style="height: 1000px; padding: 40px 0">
+        <p data-webruit-track data-webruit-id="scroll-content">
+          This content is far down the page to test scroll tracking and
+          visibility detection.
+        </p>
+      </div>
+    </div>
+
+    <!-- Debug Info -->
+    <div class="debug" id="debug">SDK Loaded: <span id="status">❌</span></div>
+
+    <!-- Webruit SDK -->
+    <script
+      src="https://cdn.webruit.com/webruit.min.js"
+      data-project-key="pk_live_scdOmDH_zdu4ikKuGB1yej641FgvX221"
+    ></script>
+
+    <!-- Test Script -->
+    <script>
+      // Check if SDK loaded
+      if (window.webruit) {
+        document.getElementById('status').textContent = '✅';
+        console.log('✅ Webruit SDK loaded successfully');
+        console.log('📊 Tracker instance:', window.webruit);
+
+        // Manual tracking example
+        setTimeout(() => {
+          window.webruit.track({
+            type: 'custom',
+            componentId: 'test',
+            metadata: {
+              event: 'manual_track_test',
+              timestamp: new Date().toISOString(),
+            },
+            timestamp: Date.now(),
+          });
+          console.log('📤 Sent manual tracking event');
+        }, 2000);
+      } else {
+        console.error('❌ Webruit SDK failed to load');
+      }
+
+      // Monitor network requests
+      const originalFetch = window.fetch;
+      window.fetch = function (...args) {
+        if (args[0].includes('/track')) {
+          console.log('📡 Tracking request:', args);
+        }
+        return originalFetch.apply(this, args);
+      };
+    </script>
+  </body>
+</html>
