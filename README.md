@@ -25,3 +25,33 @@ The public site is the ResumeKit Pro sales page: hero, features, reviews, a call
 ```
 
 `client` is the site visitors use, and the only part the build plugin and tracking SDK touch. `server` is the shop's own API: MongoDB-backed payment records, status updates, and the email that follows a completed payment. It is not the Webruit API.
+
+## Running it locally: the Webruit packages
+
+`client/package.json` installs the two Webruit packages straight from a sibling checkout instead of npm (they are not published):
+
+```json
+"@webruit/tracking": "file:../../Webruit/packages/tracking-sdk",
+"@webruit/build-plugin": "file:../../Webruit/packages/build-plugin"
+```
+
+The paths are relative to `client/`, so a fresh clone needs this layout:
+
+```text
+some-folder/
+├── Webruit/              # git clone https://github.com/Ranbir5ingh/Webruit.git
+└── Webruit Demo Shop/    # this repository (any folder name works)
+```
+
+Build the packages first, then install the shop:
+
+```bash
+cd Webruit/packages/tracking-sdk && npm install && npm run build
+cd ../build-plugin && npm install && npm run build
+cd "../../../Webruit Demo Shop/client" && npm install
+npm run dev
+```
+
+If you keep Webruit somewhere else, change the two `file:` paths to point at it (or run `npm install <path-to>/packages/tracking-sdk <path-to>/packages/build-plugin`), but don't commit that change.
+
+The build plugin reads `WEBRUIT_PROJECT_ID`, `WEBRUIT_SECRET_KEY`, `WEBRUIT_API_URL` and optionally `WEBRUIT_DOMAIN` from `client/.env` (see `client/.env.example`). If they're missing, the build still succeeds: it writes `.webruit/manifest.json` locally and skips the upload.
