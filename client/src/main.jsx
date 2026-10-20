@@ -7,11 +7,12 @@ import { Provider } from 'react-redux'
 import { Toaster } from 'sonner'
 import store from "./store/store.js";
 import { init as initWebruit } from '@webruit/tracking'
+import { config } from './lib/config'
 
-if (import.meta.env.VITE_WEBRUIT_PROJECT_KEY && import.meta.env.VITE_WEBRUIT_TRACK_ENDPOINT) {
+if (config.webruit.projectKey && config.webruit.trackEndpoint) {
   initWebruit({
-    projectKey: import.meta.env.VITE_WEBRUIT_PROJECT_KEY,
-    endpoint: import.meta.env.VITE_WEBRUIT_TRACK_ENDPOINT,
+    projectKey: config.webruit.projectKey,
+    endpoint: config.webruit.trackEndpoint,
   })
 }
 

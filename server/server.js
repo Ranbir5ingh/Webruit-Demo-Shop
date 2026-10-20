@@ -18,7 +18,10 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: process.env.CLIENT_BASE_URL,
+    // Dev: http://localhost:5173. Prod: set SHOP_DOMAIN (=> https://<SHOP_DOMAIN>) or CLIENT_BASE_URL.
+    origin:
+      process.env.CLIENT_BASE_URL ||
+      (process.env.SHOP_DOMAIN ? `https://${process.env.SHOP_DOMAIN}` : "http://localhost:5173"),
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

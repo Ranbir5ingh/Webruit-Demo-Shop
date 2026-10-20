@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { config } from "@/lib/config";
 
 const initialState = {
   paymentList: [],
@@ -13,7 +14,7 @@ export const getAllPayments = createAsyncThunk(
   "/payment/getAllPayments",
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/payment/all`);
+      const res = await axios.get(`${config.apiUrl}/api/payment/all`);
       return res.data.payments;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch payments");
@@ -26,7 +27,7 @@ export const createPaymentRecord = createAsyncThunk(
   "/payment/createPayment",
   async (paymentData, thunkAPI) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/payment/create`, paymentData);
+      const res = await axios.post(`${config.apiUrl}/api/payment/create`, paymentData);
       return res.data.payment;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to create payment");
@@ -39,7 +40,7 @@ export const getPaymentByTransactionId = createAsyncThunk(
   "/payment/getPaymentByTransactionId",
   async (transactionId, thunkAPI) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/payment/transaction/${transactionId}`);
+      const res = await axios.get(`${config.apiUrl}/api/payment/transaction/${transactionId}`);
       return res.data.payment;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Payment not found");
@@ -52,7 +53,7 @@ export const updatePaymentStatus = createAsyncThunk(
   "/payment/updatePaymentStatus",
   async ({ transactionId, status }, thunkAPI) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/payment/update-status`, {
+      const res = await axios.post(`${config.apiUrl}/api/payment/update-status`, {
         transactionId,
         status,
       });
@@ -68,7 +69,7 @@ export const deletePayment = createAsyncThunk(
   "/payment/deletePayment",
   async (paymentId, thunkAPI) => {
     try {
-      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/payment/${paymentId}`);
+      const res = await axios.delete(`${config.apiUrl}/api/payment/${paymentId}`);
       return { paymentId, ...res.data };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to delete payment");

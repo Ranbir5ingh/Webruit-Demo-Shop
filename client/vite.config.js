@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => {
         projectId: env.WEBRUIT_PROJECT_ID || env.VITE_WEBRUIT_PROJECT_ID,
         secretKey: env.WEBRUIT_SECRET_KEY,
         apiUrl: env.WEBRUIT_API_URL,
+        // Prod: set WEBRUIT_DOMAIN=example.com -> uploads to https://api.example.com
+        domain: env.WEBRUIT_DOMAIN || env.VITE_WEBRUIT_DOMAIN,
       }),
       react(),
       tailwindcss(),
