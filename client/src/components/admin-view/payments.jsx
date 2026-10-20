@@ -33,7 +33,6 @@ import {
   getAllPayments,
   updatePaymentStatus,
   deletePayment,
-  getPaymentByTransactionId,
 } from "@/store/admin/payment-slice";
 
 function AdminPaymentsView() {
@@ -119,7 +118,7 @@ function AdminPaymentsView() {
   };
 
   const getConfirmationMessage = () => {
-    const { type, payment, newStatus } = confirmDialog;
+    const { type, newStatus } = confirmDialog;
     
     if (type === "status") {
       if (newStatus === "completed") {

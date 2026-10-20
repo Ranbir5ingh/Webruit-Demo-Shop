@@ -74,7 +74,7 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
             {/* Links */}
             <div className="flex  sm:flex-row gap-4 sm:gap-6 text-center sm:text-left">
-              {footerLinks.map((item, index) => (
+              {footerLinks.map((item) => (
                 <Link
                   to={item.path}
                   className="font-medium text-[0.95rem] sm:text-[0.875rem] md:text-[0.95rem] lg:text-[1rem] text-black/70 hover:text-[#0a0a0a] transition-colors leading-relaxed"

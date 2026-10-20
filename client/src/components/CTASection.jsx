@@ -1,6 +1,5 @@
 import { initiatePayment } from "@/lib/initiatePayment";
 import React from "react";
-import { toast } from "sonner";
 
 const CTASection = () => {
   const course = {

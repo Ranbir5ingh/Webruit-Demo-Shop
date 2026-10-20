@@ -17,7 +17,7 @@ const ResumeKitPage = () => {
   };
 
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const [isStickyBarClosed, setIsStickyBarClosed] = useState(false);
+  const [isStickyBarClosed] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {

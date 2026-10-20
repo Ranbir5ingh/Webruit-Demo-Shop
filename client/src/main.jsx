@@ -6,6 +6,14 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { Toaster } from 'sonner'
 import store from "./store/store.js";
+import { init as initWebruit } from '@webruit/tracking'
+
+if (import.meta.env.VITE_WEBRUIT_PROJECT_KEY && import.meta.env.VITE_WEBRUIT_TRACK_ENDPOINT) {
+  initWebruit({
+    projectKey: import.meta.env.VITE_WEBRUIT_PROJECT_KEY,
+    endpoint: import.meta.env.VITE_WEBRUIT_TRACK_ENDPOINT,
+  })
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

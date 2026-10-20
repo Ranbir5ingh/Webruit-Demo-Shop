@@ -1,39 +1,27 @@
-// vite.config.ts - CLEAN OUT-OF-THE-BOX SETUP
-import path from "path";
+import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
-import webruit from "@webruit/build-plugin/vite";
-import {webruitBabelPlugin} from "@webruit/build-plugin";
+import { webruit } from "@webruit/build-plugin/vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
     plugins: [
-      react({
-        babel: {
-          plugins: [
-            [
-              webruitBabelPlugin,
-              {
-                debug: true,
-              },
-            ],
-          ],
-        },
-      }),
+      // Must run before the React plugin: injects data-wb-* ids, and on
+      // `vite build` writes + uploads .webruit/manifest.json.
       webruit({
-        projectId: env.VITE_WEBRUIT_PROJECT_ID || "test-project",
-        uploadEndpoint: env.VITE_WEBRUIT_UPLOAD_ENDPOINT,
-        projectKey: env.VITE_WEBRUIT_PROJECT_KEY,
-        debug: true,
+        projectId: env.WEBRUIT_PROJECT_ID || env.VITE_WEBRUIT_PROJECT_ID,
+        secretKey: env.WEBRUIT_SECRET_KEY,
+        apiUrl: env.WEBRUIT_API_URL,
       }),
+      react(),
       tailwindcss(),
     ],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
+        "@": path.resolve(import.meta.dirname, "./src"),
       },
     },
   };

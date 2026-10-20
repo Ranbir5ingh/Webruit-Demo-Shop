@@ -44,7 +44,7 @@ const ContactUsPage = () => {
         message: "Thank you for your message! We’ll get back to you within 24 hours.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
+    } catch {
       setSubmitStatus({
         type: "error",
         message: "Something went wrong. Please try again later.",

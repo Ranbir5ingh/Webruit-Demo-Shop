@@ -15,7 +15,6 @@ const HeroSection = () => {
   };
   const [currentSlide, setCurrentSlide] = useState(0);
   const fadeInRefs = useRef([]);
-  fadeInRefs.current = [];
 
   const addToFadeInRefs = (el) => {
     if (el && !fadeInRefs.current.includes(el)) {
