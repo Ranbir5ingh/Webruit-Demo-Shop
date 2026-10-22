@@ -8,58 +8,56 @@ const ContactUsPage = () => {
     subject: "",
     message: "",
   });
-  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const validate = (name, value) => {
-    if (name === "name") return !value.trim() ? "Full name is required." : "";
-    if (name === "email") {
-      if (!value.trim()) return "Email is required.";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email address.";
-    }
-    if (name === "message") return !value.trim() ? "Message is required." : "";
-    return "";
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setTouched({ name: true, email: true, message: true });
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    const newErrors = {
-      name: validate("name", formData.name),
-      email: validate("email", formData.email),
-      message: validate("message", formData.message),
-    };
-
-    if (newErrors.name || newErrors.email || newErrors.message) {
-      setErrors(newErrors);
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setSubmitStatus({ type: "error", message: "Please fill in all required fields." });
       setIsSubmitting(false);
       return;
     }
 
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({ type: "error", message: "Please enter a valid email address." });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) throw new Error();
       setSubmitStatus({
         type: "success",
         message: "Thank you for your message! We’ll get back to you within 24 hours.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({});
+      setTouched({});
     } catch {
       setSubmitStatus({
         type: "error",
@@ -160,11 +158,13 @@ const ContactUsPage = () => {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
-                      errors.name ? "border-red-500" : "border-gray-300"
+                      touched.name && !formData.name.trim() ? "border-red-400" : "border-gray-300"
                     }`}
                     placeholder="Your full name"
                   />
-                  {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
+                  {touched.name && !formData.name.trim() && (
+                    <p className="text-xs text-red-600 mt-1">Name is required.</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-black/80 mb-1">Email Address *</label>
@@ -175,11 +175,18 @@ const ContactUsPage = () => {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
-                      errors.email ? "border-red-500" : "border-gray-300"
+                      touched.email && (!formData.email.trim() || !emailRegex.test(formData.email))
+                        ? "border-red-400"
+                        : "border-gray-300"
                     }`}
                     placeholder="your@email.com"
                   />
-                  {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
+                  {touched.email && !formData.email.trim() && (
+                    <p className="text-xs text-red-600 mt-1">Email is required.</p>
+                  )}
+                  {touched.email && formData.email.trim() && !emailRegex.test(formData.email) && (
+                    <p className="text-xs text-red-600 mt-1">Please enter a valid email address.</p>
+                  )}
                 </div>
               </div>
 
@@ -204,11 +211,13 @@ const ContactUsPage = () => {
                   onBlur={handleBlur}
                   rows={6}
                   className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none text-[0.95rem] ${
-                    errors.message ? "border-red-500" : "border-gray-300"
+                    touched.message && !formData.message.trim() ? "border-red-400" : "border-gray-300"
                   }`}
                   placeholder="Tell us more about your inquiry..."
                 ></textarea>
-                {errors.message && <p className="text-xs text-red-600 mt-1">{errors.message}</p>}
+                {touched.message && !formData.message.trim() && (
+                  <p className="text-xs text-red-600 mt-1">Message is required.</p>
+                )}
               </div>
 
               <button
