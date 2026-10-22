@@ -8,15 +8,31 @@ const ContactUsPage = () => {
     subject: "",
     message: "",
   });
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  const validate = (name, value) => {
+    if (name === "name") return !value.trim() ? "Full name is required." : "";
+    if (name === "email") {
+      if (!value.trim()) return "Email is required.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Please enter a valid email address.";
+    }
+    if (name === "message") return !value.trim() ? "Message is required." : "";
+    return "";
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
   };
 
   const handleSubmit = async (e) => {
@@ -24,26 +40,26 @@ const ContactUsPage = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    const newErrors = {
+      name: validate("name", formData.name),
+      email: validate("email", formData.email),
+      message: validate("message", formData.message),
+    };
+
+    if (newErrors.name || newErrors.email || newErrors.message) {
+      setErrors(newErrors);
       setSubmitStatus({ type: "error", message: "Please fill in all required fields." });
       setIsSubmitting(false);
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setSubmitStatus({ type: "error", message: "Please enter a valid email address." });
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       setSubmitStatus({
         type: "success",
         message: "Thank you for your message! We’ll get back to you within 24 hours.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
+      setErrors({});
     } catch {
       setSubmitStatus({
         type: "error",
@@ -142,9 +158,13 @@ const ContactUsPage = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem]"
+                    onBlur={handleBlur}
+                    className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
+                      errors.name ? "border-red-500" : "border-gray-300"
+                    }`}
                     placeholder="Your full name"
                   />
+                  {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-black/80 mb-1">Email Address *</label>
@@ -153,9 +173,13 @@ const ContactUsPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem]"
+                    onBlur={handleBlur}
+                    className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
+                      errors.email ? "border-red-500" : "border-gray-300"
+                    }`}
                     placeholder="your@email.com"
                   />
+                  {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
                 </div>
               </div>
 
@@ -177,10 +201,14 @@ const ContactUsPage = () => {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
+                  onBlur={handleBlur}
                   rows={6}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none text-[0.95rem]"
+                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent resize-none text-[0.95rem] ${
+                    errors.message ? "border-red-500" : "border-gray-300"
+                  }`}
                   placeholder="Tell us more about your inquiry..."
                 ></textarea>
+                {errors.message && <p className="text-xs text-red-600 mt-1">{errors.message}</p>}
               </div>
 
               <button
