@@ -11,12 +11,19 @@ const ContactUsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  const [touched, setTouched] = useState({});
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleSubmit = async (e) => {
@@ -38,12 +45,12 @@ const ContactUsPage = () => {
     }
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       setSubmitStatus({
         type: "success",
         message: "Thank you for your message! We’ll get back to you within 24 hours.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
+      setTouched({});
     } catch {
       setSubmitStatus({
         type: "error",
@@ -142,7 +149,10 @@ const ContactUsPage = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem]"
+                    onBlur={handleBlur}
+                    className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
+                      touched.name && !formData.name.trim() ? "border-red-300 bg-red-50/30" : "border-gray-300"
+                    }`}
                     placeholder="Your full name"
                   />
                 </div>
@@ -153,7 +163,10 @@ const ContactUsPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem]"
+                    onBlur={handleBlur}
+                    className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-[0.95rem] ${
+                      touched.email && (!formData.email.trim() || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))) ? "border-red-300 bg-red-50/30" : "border-gray-300"
+                    }`}
                     placeholder="your@email.com"
                   />
                 </div>
