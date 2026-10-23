@@ -73,11 +73,12 @@ const Footer = () => {
         <div className="border-t border-black/10 pt-6 sm:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
             {/* Links */}
-            <div className="flex  sm:flex-row gap-4 sm:gap-6 text-center sm:text-left">
+            <div className="flex sm:flex-row gap-4 sm:gap-6 text-center sm:text-left">
               {footerLinks.map((item) => (
                 <Link
+                  key={item.path}
                   to={item.path}
-                  className="font-medium text-[0.95rem] sm:text-[0.875rem] md:text-[0.95rem] lg:text-[1rem] text-black/70 hover:text-[#0a0a0a] transition-colors leading-relaxed"
+                  className={`font-medium text-[0.95rem] sm:text-[0.875rem] md:text-[0.95rem] lg:text-[1rem] transition-colors leading-relaxed ${item.label === "Contact Us" ? "text-indigo-500 font-bold hover:text-indigo-400 underline" : "text-black/70 hover:text-[#0a0a0a]"}`}
                 >
                   {item.label}
                 </Link>
