@@ -30,7 +30,7 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="text-[#0a0a0a] py-16 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+    <section id="features" className="text-[#0a0a0a] py-16 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
       <div className="text-center max-w-7xl mx-auto">
         {/* Main Heading - Highly responsive */}
         <h2 className="text-[#0a0a0a] text-[1.9rem] xs:text-[1.3rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-bold leading-tight text-center mb-3 px-2 sm:px-4 font-toboggan-medium">
