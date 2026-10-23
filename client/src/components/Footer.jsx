@@ -77,7 +77,7 @@ const Footer = () => {
               {footerLinks.map((item) => (
                 <Link
                   to={item.path}
-                  className="font-medium text-[0.95rem] sm:text-[0.875rem] md:text-[0.95rem] lg:text-[1rem] text-black/70 hover:text-[#0a0a0a] transition-colors leading-relaxed"
+                  className={`font-medium text-[0.95rem] sm:text-[0.875rem] md:text-[0.95rem] lg:text-[1rem] transition-colors leading-relaxed ${item.label === "Contact Us" ? "text-indigo-600 font-semibold hover:text-indigo-700" : "text-black/70 hover:text-[#0a0a0a]"}`}
                 >
                   {item.label}
                 </Link>
