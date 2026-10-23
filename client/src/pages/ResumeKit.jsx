@@ -35,9 +35,9 @@ const ResumeKitPage = () => {
       setShowStickyBar(shouldShowBar);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     handleScroll();
 
@@ -60,7 +60,7 @@ const ResumeKitPage = () => {
       </div>
 
       {showStickyBar && (
-        <div className="fixed bottom-0 left-0 right-0 z-0 md:hidden animate-in slide-in-from-bottom duration-300">
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden animate-in slide-in-from-bottom duration-300">
           <div className="bg-white/30 backdrop-blur-md border-t border-white/10 px-4 py-3 flex items-center justify-between h-16">
             <span className="text-black text-base font-semibold">
               Get Hired
