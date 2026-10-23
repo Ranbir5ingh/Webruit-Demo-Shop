@@ -87,11 +87,15 @@ const HeroSection = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center sm:justify-start gap-6 sm:gap-8 pt-4">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 pt-4">
             {/* Badge 1 */}
             <div className="inline-flex items-center border  border-indigo-100 text-indigo-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium font-Inter">
               500+ Customers
             </div>
+            {/* Support Link Badge */}
+            <a href="/contact-us" className="inline-flex items-center border border-indigo-100 text-indigo-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium font-Inter">
+              Support
+            </a>
 
             {/* Badge 2 */}
             <div className="inline-flex items-center border  border-indigo-100 text-indigo-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium font-Inter">
