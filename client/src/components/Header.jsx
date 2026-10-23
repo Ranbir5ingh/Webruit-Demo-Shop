@@ -12,6 +12,7 @@ export default function Header() {
 
   const navLinks = [
     { label: "Home", path: "/" },
+    { label: "Support", path: "/contact-us" },
     { label: "Contact Us", path: "/contact-us" },
     { label: "Terms & Conditions", path: "/terms-and-conditions" },
     { label: "Privacy Policy", path: "/privacy-policy" },
