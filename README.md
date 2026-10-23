@@ -1,5 +1,7 @@
 # Webruit Demo Shop
 
+**Live demo:** [webruit-demo-shop.vercel.app](https://webruit-demo-shop.vercel.app/) · **The product watching it:** [webruit.tech](https://webruit.tech)
+
 The site Webruit is pointed at. This repository is a demo storefront, not a folder inside the product. [Webruit](https://github.com/Ranbir5ingh/Webruit) is the intelligence platform. This shop is the website that platform watches, understands, and proposes changes for.
 
 The storefront sells **ResumeKit Pro**: a landing page with a hero, feature list, reviews, FAQ, and a buy action, plus the legal pages and a small admin view of payments. It is wired the same way a customer site would be. The build plugin runs when the client compiles, and the tracking SDK runs in the browser.
