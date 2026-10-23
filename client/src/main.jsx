@@ -8,6 +8,7 @@ import { Toaster } from 'sonner'
 import store from "./store/store.js";
 import { init as initWebruit } from '@webruit/tracking'
 import { config } from './lib/config'
+import WakeGate from './components/WakeGate.jsx'
 
 if (config.webruit.projectKey) {
   // endpoint is optional: @webruit/tracking defaults to the Webruit Cloud.
@@ -23,7 +24,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
     <Provider store={store}>
-    <App />
+    <WakeGate>
+      <App />
+    </WakeGate>
     <Toaster className='z-500' />
     </Provider>
     </BrowserRouter>
